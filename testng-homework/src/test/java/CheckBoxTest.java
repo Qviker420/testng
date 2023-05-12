@@ -3,7 +3,10 @@ import com.codeborne.selenide.Screenshots;
 import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
 import com.codeborne.selenide.impl.Screenshot;
+import com.codeborne.selenide.testng.ScreenShooter;
+import jdk.internal.org.objectweb.asm.tree.analysis.Analyzer;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.testng.IRetryAnalyzer;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
@@ -18,7 +21,7 @@ import java.util.List;
 import static com.codeborne.selenide.Selenide.*;
 
 
-@Listeners({ConfigTest.class})
+@Listeners({ScreenShooter.class})
 public class CheckBoxTest extends ConfigTest
 {
     SoftAssert softAssert;
@@ -26,22 +29,29 @@ public class CheckBoxTest extends ConfigTest
     public void setup()
     {
         softAssert = new SoftAssert();
-        Configuration.baseUrl = "http://the-internet.herokuapp.com/checkboxes ";
-        //ar inaxavs screenshotebs
-        Configuration.reportsFolder ="C:\\Users\\chali\\TBC\\testng-homework\\testng-homework\\src\\test\\java\\CheckboxFailedTests";
+
         Configuration.screenshots = true;
         Configuration.savePageSource = false;
     }
-    @Test(priority = 0)
+    @Test(priority = 3, groups = "FrontEnd", threadPoolSize = 4)
     public void uncheckBoxTest(){
-        open("");
+        open("http://the-internet.herokuapp.com/checkboxes");
         Uncheck();
     }
-    @Test(priority = 1)
+    @Test(priority = 4, groups = "BackEnd", threadPoolSize = 4)
     public void CheckBoxTest()
     {
         check();
     }
+
+    @Test(retryAnalyzer = Analyzer.RetryAnalyze.class)
+    public void retryTest()
+    {
+        softAssert.fail();
+    }
+
+
+
     public void Uncheck(){
         List<SelenideElement> checkBoxes = $$("input");
         for(SelenideElement element : checkBoxes)

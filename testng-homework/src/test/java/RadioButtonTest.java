@@ -1,5 +1,7 @@
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Configuration;
+import com.codeborne.selenide.testng.ScreenShooter;
+import org.testng.IRetryAnalyzer;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
@@ -7,7 +9,7 @@ import org.testng.asserts.SoftAssert;
 
 import static com.codeborne.selenide.Selenide.*;
 
-@Listeners({SoftAssert.class})
+@Listeners({ScreenShooter.class})
 public class RadioButtonTest extends ConfigTest{
 
     SoftAssert softAssert;
@@ -16,22 +18,21 @@ public class RadioButtonTest extends ConfigTest{
     public void setup()
     {
         softAssert = new SoftAssert();
-        Configuration.reportsFolder ="testng-homework/src/test/java/CheckboxFailedTests";
         Configuration.savePageSource = false;
-        Configuration.baseUrl = "https://demoqa.com/radio-button";
+
     }
-    @Test
+    @Test(priority = 0, groups = "FrontEnd", threadPoolSize = 1)
     public void radioYesTest()
     {
-        open("");
+        open("https://demoqa.com/radio-button");
         selectYes();
     }
-    @Test
+    @Test(priority = 1, groups = "BackEnd", threadPoolSize = 2)
     public void radioNoTest()
     {
-        open("");
         selectNo();
     }
+
     public void selectYes()
     {
         $("input[type='radio'][id='yesRadio']").click();
@@ -40,5 +41,6 @@ public class RadioButtonTest extends ConfigTest{
     public void selectNo()
     {
         $("input[type='radio'][id='noRadio']").shouldBe(Condition.interactable);
+        softAssert.fail();
     }
 }
