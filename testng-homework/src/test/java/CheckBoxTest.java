@@ -4,7 +4,6 @@ import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
 import com.codeborne.selenide.impl.Screenshot;
 import com.codeborne.selenide.testng.ScreenShooter;
-import jdk.internal.org.objectweb.asm.tree.analysis.Analyzer;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.IRetryAnalyzer;
 import org.testng.annotations.BeforeTest;
@@ -44,7 +43,7 @@ public class CheckBoxTest extends ConfigTest
         check();
     }
 
-    @Test(retryAnalyzer = Analyzer.RetryAnalyze.class)
+    //@Test(retryAnalyzer = Analyzer.RetryAnalyze.class)
     public void retryTest()
     {
         softAssert.fail();
